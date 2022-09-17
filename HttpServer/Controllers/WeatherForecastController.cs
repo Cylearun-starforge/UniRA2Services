@@ -1,3 +1,4 @@
+using HttpServer.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HttpServer.Controllers
@@ -11,14 +12,17 @@ namespace HttpServer.Controllers
 			"Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
 		};
 
+		private readonly MongoService _mongoService;
+
 		private readonly ILogger<WeatherForecastController> _logger;
 
-		public WeatherForecastController(ILogger<WeatherForecastController> logger)
+		public WeatherForecastController(ILogger<WeatherForecastController> logger, MongoService mongoService)
 		{
 			_logger = logger;
+			_mongoService = mongoService;
 		}
 
-		[HttpGet(Name = "GetWeatherForecast")]
+		[HttpGet("random", Name = "GetWeatherForecast")]
 		public IEnumerable<WeatherForecast> Get()
 		{
 			return Enumerable.Range(1, 5).Select(index => new WeatherForecast
