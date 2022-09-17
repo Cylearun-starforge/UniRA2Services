@@ -19,4 +19,9 @@ public class MongoService
 	{
 		return _db.GetCollection<T>(collection, settings);
 	}
+
+	public IMongoCollection<T> GetCollection<T>(MongoCollectionSettings? settings = null)
+	{
+		return _db.GetCollection<T>(typeof(T).Name, settings);
+	}
 }

@@ -1,3 +1,4 @@
+using System.Reflection;
 using HttpServer.Services;
 using HttpServer.Settings.Models;
 
@@ -10,7 +11,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.Configure<DatabaseSetting>(builder.Configuration.GetSection("DatabaseSetting"));
+builder.Services.AddSingleton<CryptoService>();
 builder.Services.AddSingleton<MongoService>();
+builder.Services.AddSingleton<UserService>();
 
 var app = builder.Build();
 

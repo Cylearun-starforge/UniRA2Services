@@ -1,4 +1,5 @@
 ﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace HttpServer.Models;
@@ -18,13 +19,17 @@ public class User
 
 	public string Email { get; set; } = null!;
 
-	public IEnumerable<User> Friends { get; set; } = Array.Empty<User>();
+	public IEnumerable<ObjectId> Friends { get; set; } = Array.Empty<ObjectId>();
 
-	public string PasswordHash { get; set; } = null!;
+	[BsonRepresentation(BsonType.String)] public byte[] PasswordHash { get; set; } = null!;
+
+	public string Salt { get; set; } = string.Empty;
 
 	[BsonRepresentation(BsonType.String)] public HashMethods HashMethod { get; set; } = HashMethods.Sha256;
 
-	public IEnumerable<Achievement> Achievements { get; set; } = Array.Empty<Achievement>();
+	public IEnumerable<ObjectId> Achievements { get; set; } = Array.Empty<ObjectId>();
 
-	public IEnumerable<Credits> Credits { get; set; } = Array.Empty<Credits>();
+	public IEnumerable<ObjectId> Credits { get; set; } = Array.Empty<ObjectId>();
+
+	public DateTime RegisterDateTime { get; set; } = DateTime.UtcNow;
 }
