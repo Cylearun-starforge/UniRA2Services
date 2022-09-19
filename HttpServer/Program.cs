@@ -1,5 +1,7 @@
-using System.Reflection;
+using System.Text.Json;
+using HttpServer.MiddleWares;
 using HttpServer.Services;
+using HttpServer.Settings;
 using HttpServer.Settings.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -30,5 +32,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseBusinessMiddleWares();
 
 app.Run();

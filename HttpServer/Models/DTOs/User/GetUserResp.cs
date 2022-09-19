@@ -1,6 +1,4 @@
-﻿using MongoDB.Bson;
-
-namespace HttpServer.Models.DTOs.User;
+﻿namespace HttpServer.Models.DTOs.User;
 
 public class GetUserResp
 {
