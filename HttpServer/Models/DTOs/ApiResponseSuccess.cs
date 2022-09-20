@@ -2,6 +2,6 @@
 
 public class ApiResponseSuccess<T>
 {
-	public const int Code = 0;
+	public int Code { get; } = 0;
 	public T? Data { get; set; }
 }
