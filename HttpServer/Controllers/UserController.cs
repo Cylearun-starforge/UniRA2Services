@@ -1,5 +1,6 @@
 ﻿using HttpServer.Error;
 using HttpServer.ErrorCodes;
+using HttpServer.Extensions;
 using HttpServer.Models;
 using HttpServer.Models.DTOs;
 using HttpServer.Models.DTOs.User;
@@ -21,9 +22,18 @@ public class UserController : ControllerBase
 		_userService = userService;
 	}
 
-	[HttpGet("{id:length(24)}")]
+	[HttpGet("{id:required}")]
 	public async Task<ApiResponseSuccess<GetUserResp>> GetUserById(string id)
 	{
+		if (!id.IsObjectId())
+		{
+			throw new UniRa2BusinessError
+			{
+				Code = ErrorCode.MakeErrorCode(true, ErrorCode.Common.InvalidParameter),
+				Msg = "Invalid ID"
+			};
+		}
+
 		try
 		{
 			var user = _userService.GetUsers().AsQueryable().First(user => user.Id == id);

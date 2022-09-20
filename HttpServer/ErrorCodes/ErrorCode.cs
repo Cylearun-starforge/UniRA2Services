@@ -25,14 +25,20 @@ public static partial class ErrorCode
 {
 	public static readonly uint Ok = 0;
 
-	public static uint MakeErrorCode(bool fatal, User error)
+
+	public static uint MakeErrorCode(bool fatal, Common error)
 	{
 		return MakeErrorCode(fatal, 1, (uint) error);
 	}
 
-	public static uint MakeErrorCode(bool fatal, Auth error)
+	public static uint MakeErrorCode(bool fatal, User error)
 	{
 		return MakeErrorCode(fatal, 2, (uint) error);
+	}
+
+	public static uint MakeErrorCode(bool fatal, Auth error)
+	{
+		return MakeErrorCode(fatal, 3, (uint) error);
 	}
 
 
