@@ -5,6 +5,7 @@ using HttpServer.Models.DTOs;
 using HttpServer.Models.DTOs.User;
 using HttpServer.Services;
 using Microsoft.AspNetCore.Mvc;
+using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace HttpServer.Controllers;
@@ -23,18 +24,28 @@ public class UserController : ControllerBase
 	[HttpGet("{id:length(24)}")]
 	public async Task<ApiResponseSuccess<GetUserResp>> GetUserById(string id)
 	{
-		var user = _userService.GetUsers().AsQueryable().First(user => user.Id == id);
-		var userResp = new GetUserResp()
+		try
 		{
-			Id = user.Id,
-			Name = user.Name,
-			Email = user.Email,
-			RegisterDateTime = user.RegisterDateTime
-		};
-		return new ApiResponseSuccess<GetUserResp>
+			var user = _userService.GetUsers().AsQueryable().First(user => user.Id == id);
+			var userResp = new GetUserResp()
+			{
+				Id = user.Id,
+				Name = user.Name,
+				Email = user.Email,
+				RegisterDateTime = user.RegisterDateTime
+			};
+			return new ApiResponseSuccess<GetUserResp>
+			{
+				Data = userResp
+			};
+		}
+		catch (InvalidOperationException)
 		{
-			Data = userResp
-		};
+			throw new UniRa2BusinessError
+			{
+				Code = ErrorCode.MakeErrorCode(true, ErrorCode.User.NotFound)
+			};
+		}
 	}
 
 	// POST api/<UserController>
