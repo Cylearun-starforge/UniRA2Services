@@ -7,10 +7,15 @@ namespace HttpServer.MiddleWares;
 public class BusinessErrorHandlerMiddleware
 {
 	private readonly RequestDelegate _next;
+	private readonly JsonSerializerOptions _serializerOptions;
 
 	public BusinessErrorHandlerMiddleware(RequestDelegate next)
 	{
 		_next = next;
+		_serializerOptions = new JsonSerializerOptions
+		{
+			PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+		};
 	}
 
 	public async Task InvokeAsync(HttpContext context)
@@ -26,7 +31,7 @@ public class BusinessErrorHandlerMiddleware
 			{
 				Code = (int) e.Code,
 				Msg = e.Msg
-			});
+			}, _serializerOptions);
 
 			context.Response.StatusCode = 200;
 			var result = await context.Response.BodyWriter.WriteAsync(errorResp);
